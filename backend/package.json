@@ -1,0 +1,15 @@
+{
+  "name": "course-selling-app-backend",
+  "version": "1.0.0",
+  "description": "This is a simple backend for the course selling app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soumya Banerjee",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0"
+  }
+}
