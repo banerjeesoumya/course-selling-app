@@ -1,20 +1,16 @@
-const { Admin } = require("../db");
-
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config")
 async function adminMiddleware (req, res, next) {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const existsUser = await Admin.findOne({
-        username : username,
-        password : password
-    });
-
-    if (existsUser) {
+    const token = req.headers.authorization;
+    const words = token.split(" ");
+    const jwtToken = words[1];
+    const decodedValue = jwt.verify(jwtToken, JWT_SECRET);
+    if (decodedValue.username) {
         next();
     } else {
         res.status(403).json({
-            msg : "Wrong credentials. Admin doesn't exist"
-        });
+            msg : "Admin not authenticated"
+        })
     }
 }
 

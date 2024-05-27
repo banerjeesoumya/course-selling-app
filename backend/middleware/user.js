@@ -1,18 +1,17 @@
-const { User } = require("../db");
-async function userMiddleware (req, res, next) {
-    const username = req.headers.username;
-    const password = req.headers.password;
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config");
 
-    const userExists = await User.findOne({
-        username : username,
-        password : password
-    });
-    
-    if (userExists) {
+async function userMiddleware (req, res, next) {
+    const token = req.headers.authorization;
+    const words = token.split(" ");
+    const jwtToken = words[1];
+    const decodedValue = jwt.verify(jwtToken, JWT_SECRET);
+    if (decodedValue.username){
+        req.username = decodedValue.username
         next();
     } else {
         res.status(403).json({
-            msg : "User doesn't exists"
+            msg : "User not authenticated"
         });
     }
 }
